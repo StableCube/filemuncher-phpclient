@@ -4,6 +4,7 @@ namespace StableCube\FileMuncherClient\Services;
 
 use StableCube\FileMuncherClient\Models\JsonWebToken;
 
+
 /**
  * Manages the FileMuncher jwt cache
  */
