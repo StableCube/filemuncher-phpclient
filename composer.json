@@ -3,6 +3,7 @@
   "description": "A php client for the File Muncher service",
   "license": "MIT",
   "type": "library",
+  "minimum-stability": "prefer-stable",
   "require": {
     "php": "^7.0|^7.2",
     "ext-curl": "*"
