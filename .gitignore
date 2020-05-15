@@ -1,2 +1,5 @@
-/.idea/*
-/vendor/*
+# Dirs
+vendor/
+
+# Files
+composer.lock
