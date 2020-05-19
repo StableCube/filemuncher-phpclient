@@ -11,11 +11,12 @@ class FileMetadataEndpointV1 extends EndpointBase
 
     function __construct(
         OAuthTokenManager $tokenManager, 
-        string $workspaceHubApiUriRoot)
+        string $workspaceHubApiUriRoot,
+        bool $disableCertValidation = false)
     {
         $this->workspaceHubApiUriRoot = $workspaceHubApiUriRoot;
 
-        parent::__construct($tokenManager);
+        parent::__construct($tokenManager, $disableCertValidation);
     }
 
     public function getByWorkspace(string $workspaceId) : array
