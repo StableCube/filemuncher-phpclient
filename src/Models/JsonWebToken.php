@@ -7,9 +7,11 @@ class JsonWebToken implements \JsonSerializable
     public $accessToken;
     public $expiresIn;
     public $tokenType;
+    public $clientSecret;
     
-    function __construct()
+    function __construct(string $clientSecret)
     {
+        $this->clientSecret = $clientSecret;
     }
 
     public function fromArray(array $data)
@@ -19,9 +21,9 @@ class JsonWebToken implements \JsonSerializable
         $this->tokenType = $data['token_type'];
     }
 
-    public function getDecodedToken($clientSecret = null)
+    public function getDecodedToken()
     {
-        return \JWT::decode($this->accessToken, $clientSecret);
+        return \JWT::decode($this->accessToken, $this->clientSecret);
     }
 
     public function getIsExpired() : bool

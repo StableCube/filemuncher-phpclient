@@ -80,7 +80,7 @@ class OAuthTokenManager
         
         $jsonArray = json_decode($jsonResponse, true);
 
-        $token = new JsonWebToken();
+        $token = new JsonWebToken($this->filemuncherClientSecret);
         $token->fromArray($jsonArray);
 
         return $token;
