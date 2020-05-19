@@ -11,7 +11,6 @@ class OAuthTokenManager
     private $tokenEndpoint;
     private $filemuncherClientId;
     private $filemuncherClientSecret;
-    private $jwtCacheFilePath;
     private $backendScopes;
     private $tokenStorageAdapter;
 
@@ -26,7 +25,6 @@ class OAuthTokenManager
         $this->tokenEndpoint = $tokenEndpoint;
         $this->filemuncherClientId = $filemuncherClientId;
         $this->filemuncherClientSecret = $filemuncherClientSecret;
-        $this->jwtCacheFilePath = $this->joinPaths(array(sys_get_temp_dir(), 'filemuncher', 'cache.jwt'));
         $this->backendScopes = $backendScopes;
         $this->tokenStorageAdapter = $tokenStorageAdapter;
     }

@@ -52,7 +52,9 @@ abstract class EndpointBase
             curl_setopt($curl, CURLOPT_POSTFIELDS, $dataString);
             $contentLength = strlen($dataString);
         }
-        
+
+die($token->accessToken);
+
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             'Authorization: Bearer ' . $token->accessToken,
             'Content-Type: application/json',
