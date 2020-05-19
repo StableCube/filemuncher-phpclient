@@ -14,10 +14,12 @@ use StableCube\FileMuncherClient\Exceptions\DownloadFailedException;
 abstract class EndpointBase
 {
     private $tokenManager;
+    private $disableCertValidation;
 
-    function __construct(OAuthTokenManager $tokenManager)
+    function __construct(OAuthTokenManager $tokenManager, bool $disableCertValidation = false)
     {
         $this->tokenManager = $tokenManager;
+        $this->disableCertValidation = $disableCertValidation;
     }
 
     protected function getOauthTokenManager() : OAuthTokenManager
@@ -46,14 +48,17 @@ abstract class EndpointBase
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
 
+        if($this->disableCertValidation) {
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        }
+
         $contentLength = 0;
         if($dataString != null)
         {
             curl_setopt($curl, CURLOPT_POSTFIELDS, $dataString);
             $contentLength = strlen($dataString);
         }
-
-die($token->accessToken);
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             'Authorization: Bearer ' . $token->accessToken,
@@ -83,6 +88,11 @@ die($token->accessToken);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
 
+        if($this->disableCertValidation) {
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        }
+
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             'Authorization: Bearer ' . $token->accessToken,
             'Content-Type: application/json',
@@ -110,6 +120,11 @@ die($token->accessToken);
         curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET");
+
+        if($this->disableCertValidation) {
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        }
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             'Authorization: Bearer ' . $token->accessToken,
@@ -150,6 +165,11 @@ die($token->accessToken);
         );
 
         $ch = curl_init();
+        if($this->disableCertValidation) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        }
+
         curl_setopt_array($ch, $options);
         $return = curl_exec($ch);
 
