@@ -2,6 +2,8 @@
 
 namespace StableCube\FileMuncherClient\Models;
 
+use \Firebase\JWT\JWT;
+
 class JsonWebToken implements \JsonSerializable
 {
     public $accessToken;
@@ -23,7 +25,7 @@ class JsonWebToken implements \JsonSerializable
 
     public function getDecodedToken()
     {
-        return \JWT::decode($this->accessToken, $this->clientSecret);
+        return JWT::decode($this->accessToken, $this->clientSecret);
     }
 
     public function getIsExpired() : bool
