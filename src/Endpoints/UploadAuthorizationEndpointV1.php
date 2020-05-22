@@ -19,7 +19,6 @@ class UploadAuthorizationEndpointV1 extends EndpointBase
         parent::__construct($tokenManager, $disableCertValidation);
     }
 
-
     public function create(string $workspaceSessionId, string $documentType, int $maxFileSizeBytes) : UploadAuthorization
     {
         $input = array(

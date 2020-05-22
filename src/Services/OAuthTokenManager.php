@@ -84,11 +84,6 @@ class OAuthTokenManager
         return $token;
     }
 
-    protected function joinPaths(array $paths)
-    {
-        return preg_replace('#/+#','/',join('/', $paths));
-    }
-
     /**
      * Returns an access token for the File Muncher api by either 
      * getting a cached version or requesting a new one if

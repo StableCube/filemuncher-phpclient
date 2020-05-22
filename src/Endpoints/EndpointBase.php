@@ -6,6 +6,7 @@ use StableCube\FileMuncherClient\Models\JsonWebToken;
 use StableCube\FileMuncherClient\Models\VideoUploadSession;
 use StableCube\FileMuncherClient\Models\FileManifest;
 use StableCube\FileMuncherClient\Models\WorkspaceAccessToken;
+use StableCube\FileMuncherClient\Models\ApiResponse;
 use StableCube\FileMuncherClient\Services\OAuthTokenManager;
 use StableCube\FileMuncherClient\Exceptions\DestinationNotWriteableException;
 use StableCube\FileMuncherClient\Exceptions\FileMuncherHttpException;
@@ -39,14 +40,14 @@ abstract class EndpointBase
         return $this->getOauthTokenManager()->getBackendToken();
     }
 
-    protected function curlPost(string $endpoint, string $dataString = null) : array
+    private function curl(string $action, string $endpoint, string $dataString = null) : ApiResponse
     {
         $token = $this->getBackendApiAccessToken();
         
         $curl = curl_init($endpoint);
         curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $action);
 
         if($this->disableCertValidation) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
@@ -54,8 +55,7 @@ abstract class EndpointBase
         }
 
         $contentLength = 0;
-        if($dataString != null)
-        {
+        if($dataString != null) {
             curl_setopt($curl, CURLOPT_POSTFIELDS, $dataString);
             $contentLength = strlen($dataString);
         }
@@ -67,82 +67,43 @@ abstract class EndpointBase
             );
 
         $response = curl_exec($curl);
-        $responseJson = json_decode($response, true);
         $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        if ($status != 200) {
-            $errorMessage = "Error: call to URL \"$endpoint\" failed with status \"$status\", response \"$response\", curl_error " . curl_error($curl) . ", curl_errno " . curl_errno($curl) . "\n";
-            throw new FileMuncherHttpException($errorMessage, curl_errno($curl));
-        }
+
+        $apiResponse = new ApiResponse();
+        $apiResponse->setStatusCode($status);
+        $apiResponse->setResponseData($response);
 
         curl_close($curl);
 
-        return $responseJson;
+        return $apiResponse;
     }
 
-    protected function curlDelete(string $endpoint) : string
+    protected function curlPost(string $endpoint, string $dataString = null) : ApiResponse
     {
-        $token = $this->getBackendApiAccessToken();
-        
-        $curl = curl_init($endpoint);
-        curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        $response = $this->curl('POST', $endpoint, $dataString);
 
-        if($this->disableCertValidation) {
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        }
-
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . $token->accessToken,
-            'Content-Type: application/json',
-            ));
-
-        $response = curl_exec($curl);
-        $responseJson = json_decode($response, true);
-        $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-        if ($status != 200) {
-            $errorMessage = "Error: call to URL \"$endpoint\" failed with status \"$status\", response \"$response\", curl_error " . curl_error($curl) . ", curl_errno " . curl_errno($curl) . "\n";
-            throw new FileMuncherHttpException($errorMessage, curl_errno($curl));
-        }
-
-        curl_close($curl);
-
-        return $responseJson;
+        return $response;
     }
 
-    protected function curlGet(string $endpoint) : array
+    protected function curlPut(string $endpoint, string $dataString = null) : ApiResponse
     {
-        $token = $this->getBackendApiAccessToken();
-        
-        $curl = curl_init($endpoint);
-        curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET");
+        $response = $this->curl('PUT', $endpoint, $dataString);
 
-        if($this->disableCertValidation) {
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        }
+        return $response;
+    }
 
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . $token->accessToken,
-            'Content-Type: application/json',
-            ));
+    protected function curlDelete(string $endpoint) : ApiResponse
+    {
+        $response = $this->curl('DELETE', $endpoint);
 
-        $response = curl_exec($curl);
-        $responseJson = json_decode($response, true);
-        $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        return $response;
+    }
 
-        if ($status != 200) {
-            $errorMessage = "Error: call to URL \"$endpoint\" failed with status \"$status\", response \"$response\", curl_error " . curl_error($curl) . ", curl_errno " . curl_errno($curl) . "\n";
-            throw new FileMuncherHttpException($errorMessage, curl_errno($curl));
-        }
+    protected function curlGet(string $endpoint) : ApiResponse
+    {
+        $response = $this->curl('GET', $endpoint);
 
-        curl_close($curl);
-
-        return $responseJson;
+        return $response;
     }
 
     protected function curlDownloadFile(string $url, string $dest)
