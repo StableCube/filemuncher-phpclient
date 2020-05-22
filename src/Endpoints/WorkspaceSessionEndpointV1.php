@@ -2,7 +2,9 @@
 
 namespace StableCube\FileMuncherClient\Endpoints;
 
+use StableCube\FileMuncherClient\Models\ApiResponse;
 use StableCube\FileMuncherClient\Models\WorkspaceSession;
+use StableCube\FileMuncherClient\Models\WorkspaceSessionApiResponse;
 use StableCube\FileMuncherClient\Services\OAuthTokenManager;
 
 class WorkspaceSessionEndpointV1 extends EndpointBase
@@ -20,7 +22,7 @@ class WorkspaceSessionEndpointV1 extends EndpointBase
         parent::__construct($tokenManager, $disableCertValidation);
     }
 
-    public function create(string $workspaceId, string $apiKeySecret, bool $allowFileUpload) : WorkspaceSession
+    public function create(string $workspaceId, string $apiKeySecret, bool $allowFileUpload) : WorkspaceSessionApiResponse
     {
         $input = array(
             'workspaceId' => $workspaceId,
@@ -28,27 +30,47 @@ class WorkspaceSessionEndpointV1 extends EndpointBase
             'allowFileUpload' => $allowFileUpload,
         );
 
-        $response = $this->curlPost("{$this->workspaceHubApiUriRoot}/workspace-sessions", \json_encode($input));
+        $response = $this->curlPost("{$this->workspaceHubApiUriRoot}/workspace-sessions", $input);
+
+        $dataResponse = new WorkspaceSessionApiResponse();
+        $dataResponse->setStatusCode($response->getStatusCode());
+        if($response->succeeded() === false) {
+            return $dataResponse;
+        }
+
+        $jsonData = $response->getResponseJson();
 
         $data = new WorkspaceSession();
-        $data->setId($response['id']);
-        $data->setWorkspaceId($response['workspaceId']);
-        $data->setCreationDate(new \DateTime($response['creationDate']));
-        $data->setExpireDate(new \DateTime($response['expireDate']));
+        $data->setId($jsonData['id']);
+        $data->setWorkspaceId($jsonData['workspaceId']);
+        $data->setCreationDate(new \DateTime($jsonData['creationDate']));
+        $data->setExpireDate(new \DateTime($jsonData['expireDate']));
 
-        return $data;
+        $dataResponse->setData($data);
+
+        return $dataResponse;
     }
 
-    public function get(string $id) : WorkspaceSession
+    public function get(string $id) : WorkspaceSessionApiResponse
     {
         $response = $this->curlGet("{$this->workspaceHubApiUriRoot}/workspace-sessions/{$id}");
 
+        $dataResponse = new WorkspaceSessionApiResponse();
+        $dataResponse->setStatusCode($response->getStatusCode());
+        if($response->succeeded() === false) {
+            return $dataResponse;
+        }
+
+        $jsonData = $response->getResponseJson();
+
         $data = new WorkspaceSession();
         $data->setId($response['id']);
         $data->setWorkspaceId($response['workspaceId']);
         $data->setCreationDate(new \DateTime($response['creationDate']));
         $data->setExpireDate(new \DateTime($response['expireDate']));
 
-        return $data;
+        $dataResponse->setData($data);
+
+        return $dataResponse;
     }
 }

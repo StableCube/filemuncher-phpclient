@@ -8,6 +8,8 @@ use StableCube\FileMuncherClient\DTOs\Shared\Output\TaskCreatedOutputDTO;
 use StableCube\FileMuncherClient\DTOs\VideoMutation\Input\VideoToolBatchInputDTO;
 use StableCube\FileMuncherClient\DTOs\FileExport\Input\ExportInputDTO;
 use StableCube\FileMuncherClient\DTOs\ImageMutation\Input\ImageToolBatchInputDTO;
+use StableCube\FileMuncherClient\Models\ApiResponse;
+use StableCube\FileMuncherClient\Models\TaskBatchApiResponse;
 
 class JobEndpointV1 extends EndpointBase
 {
@@ -52,28 +54,61 @@ class JobEndpointV1 extends EndpointBase
         return $output;
     }
 
-    public function startVideoMutation(VideoToolBatchInputDTO $inputData) : TaskBatchCreatedOutputDTO
+    public function startVideoMutation(VideoToolBatchInputDTO $inputData) : TaskBatchApiResponse
     {
-        $jsonData = json_encode($inputData);
-        $response = $this->curlPost("{$this->workspaceHubApiUriRoot}/jobs/video-mutation/job-batch", $jsonData);
+        $response = $this->curlPost("{$this->workspaceHubApiUriRoot}/jobs/video-mutation/job-batch", $inputData);
 
-        return $this->responseToBatchCreatedOutput($response);
+        $dataResponse = new TaskBatchApiResponse();
+        $dataResponse->setStatusCode($response->getStatusCode());
+        if($response->succeeded() === false) {
+            return $dataResponse;
+        }
+
+        $jsonData = $response->getResponseJson();
+
+        $data = $this->responseToBatchCreatedOutput($jsonData);
+
+        $dataResponse->setData($data);
+
+        return $dataResponse;
     }
 
-    public function startImageMutation(ImageToolBatchInputDTO $inputData) : TaskBatchCreatedOutputDTO
+    public function startImageMutation(ImageToolBatchInputDTO $inputData) : TaskBatchApiResponse
     {
-        $jsonData = json_encode($inputData);
-        $response = $this->curlPost("{$this->workspaceHubApiUriRoot}/jobs/image-mutation/job-batch", $jsonData);
+        $response = $this->curlPost("{$this->workspaceHubApiUriRoot}/jobs/image-mutation/job-batch", $inputData);
 
-        return $this->responseToBatchCreatedOutput($response);
+        $dataResponse = new TaskBatchApiResponse();
+        $dataResponse->setStatusCode($response->getStatusCode());
+        if($response->succeeded() === false) {
+            return $dataResponse;
+        }
+
+        $jsonData = $response->getResponseJson();
+
+        $data = $this->responseToBatchCreatedOutput($jsonData);
+
+        $dataResponse->setData($data);
+
+        return $dataResponse;
     }
 
-    public function startFileExport(ExportInputDTO $jobInput) : TaskBatchCreatedOutputDTO
+    public function startFileExport(ExportInputDTO $jobInput) : TaskBatchApiResponse
     {
-        $jsonData = json_encode($jobInput);
-        $response = $this->curlPost("{$this->workspaceHubApiUriRoot}/jobs/export/job-batch", $jsonData);
+        $response = $this->curlPost("{$this->workspaceHubApiUriRoot}/jobs/export/job-batch", $jobInput);
 
-        return $this->responseToBatchCreatedOutput($response);
+        $dataResponse = new TaskBatchApiResponse();
+        $dataResponse->setStatusCode($response->getStatusCode());
+        if($response->succeeded() === false) {
+            return $dataResponse;
+        }
+
+        $jsonData = $response->getResponseJson();
+
+        $data = $this->responseToBatchCreatedOutput($jsonData);
+
+        $dataResponse->setData($data);
+
+        return $dataResponse;
     }
 
     public function importHttpPull(string $workspaceId, string $sourceWebPath, string $localDestinationPath)

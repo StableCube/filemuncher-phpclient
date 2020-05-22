@@ -4,6 +4,9 @@ namespace StableCube\FileMuncherClient\Endpoints;
 
 use StableCube\FileMuncherClient\Services\OAuthTokenManager;
 use StableCube\FileMuncherClient\DTOs\Shared\Output\FileMetadataOutputDTO;
+use StableCube\FileMuncherClient\Models\ApiResponse;
+use StableCube\FileMuncherClient\Models\FileMetadataCollectionApiResponse;
+use StableCube\FileMuncherClient\Models\FileMetadataApiResponse;
 
 class FileMetadataEndpointV1 extends EndpointBase
 {
@@ -19,12 +22,20 @@ class FileMetadataEndpointV1 extends EndpointBase
         parent::__construct($tokenManager, $disableCertValidation);
     }
 
-    public function getByWorkspace(string $workspaceId) : array
+    public function getByWorkspace(string $workspaceId) : FileMetadataCollectionApiResponse
     {
         $response = $this->curlGet("{$this->workspaceHubApiUriRoot}/file-metadata/{$workspaceId}");
 
+        $dataResponse = new FileMetadataCollectionApiResponse();
+        $dataResponse->setStatusCode($response->getStatusCode());
+        if($response->succeeded() === false) {
+            return $dataResponse;
+        }
+
+        $jsonData = $response->getResponseJson();
+
         $data = array();
-        foreach ($response['metadata'] as $entryRaw) {
+        foreach ($jsonData['metadata'] as $entryRaw) {
             $metaData = new FileMetadataOutputDTO();
             $metaData->setWorkspaceId($entryRaw['workspaceId']);
             $metaData->setDirectory($entryRaw['directory']);
@@ -34,15 +45,25 @@ class FileMetadataEndpointV1 extends EndpointBase
             array_push($data, $metaData);
         }
 
-        return $data;
+        $dataResponse->setData($data);
+
+        return $dataResponse;
     }
 
-    public function getByDirectory(string $workspaceId, string $dirName) : array
+    public function getByDirectory(string $workspaceId, string $dirName) : FileMetadataCollectionApiResponse
     {
         $response = $this->curlGet("{$this->workspaceHubApiUriRoot}/file-metadata/{$workspaceId}/{$dirName}");
 
+        $dataResponse = new FileMetadataCollectionApiResponse();
+        $dataResponse->setStatusCode($response->getStatusCode());
+        if($response->succeeded() === false) {
+            return $dataResponse;
+        }
+
+        $jsonData = $response->getResponseJson();
+
         $data = array();
-        foreach ($response['metadata'] as $entryRaw) {
+        foreach ($jsonData['metadata'] as $entryRaw) {
             $metaData = new FileMetadataOutputDTO();
             $metaData->setWorkspaceId($entryRaw['workspaceId']);
             $metaData->setDirectory($entryRaw['directory']);
@@ -52,19 +73,31 @@ class FileMetadataEndpointV1 extends EndpointBase
             array_push($data, $metaData);
         }
 
-        return $data;
+        $dataResponse->setData($data);
+
+        return $dataResponse;
     }
 
-    public function getByFile(string $workspaceId, string $dirName, string $fileName) : FileMetadataOutputDTO
+    public function getByFile(string $workspaceId, string $dirName, string $fileName) : FileMetadataApiResponse
     {
         $response = $this->curlGet("{$this->workspaceHubApiUriRoot}/file-metadata/{$workspaceId}/{$dirName}/{$fileName}");
 
-        $metaData = new FileMetadataOutputDTO();
-        $metaData->setWorkspaceId($response['workspaceId']);
-        $metaData->setDirectory($response['directory']);
-        $metaData->setFilename($response['filename']);
-        $metaData->setTags($response['tags']);
+        $dataResponse = new FileMetadataApiResponse();
+        $dataResponse->setStatusCode($response->getStatusCode());
+        if($response->succeeded() === false) {
+            return $dataResponse;
+        }
 
-        return $data;
+        $jsonData = $response->getResponseJson();
+
+        $metaData = new FileMetadataOutputDTO();
+        $metaData->setWorkspaceId($jsonData['workspaceId']);
+        $metaData->setDirectory($jsonData['directory']);
+        $metaData->setFilename($jsonData['filename']);
+        $metaData->setTags($jsonData['tags']);
+
+        $dataResponse->setData($data);
+
+        return $dataResponse;
     }
 }

@@ -40,7 +40,7 @@ abstract class EndpointBase
         return $this->getOauthTokenManager()->getBackendToken();
     }
 
-    private function curl(string $action, string $endpoint, string $dataString = null) : ApiResponse
+    private function curl(string $action, string $endpoint, object $postData = null) : ApiResponse
     {
         $token = $this->getBackendApiAccessToken();
         
@@ -55,9 +55,10 @@ abstract class EndpointBase
         }
 
         $contentLength = 0;
-        if($dataString != null) {
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $dataString);
-            $contentLength = strlen($dataString);
+        if($postData != null) {
+            $dataJson = \json_encode($postData);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $dataJson);
+            $contentLength = strlen($dataJson);
         }
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
@@ -78,16 +79,16 @@ abstract class EndpointBase
         return $apiResponse;
     }
 
-    protected function curlPost(string $endpoint, string $dataString = null) : ApiResponse
+    protected function curlPost(string $endpoint, object $postData = null) : ApiResponse
     {
-        $response = $this->curl('POST', $endpoint, $dataString);
+        $response = $this->curl('POST', $endpoint, $postData);
 
         return $response;
     }
 
-    protected function curlPut(string $endpoint, string $dataString = null) : ApiResponse
+    protected function curlPut(string $endpoint, object $postData = null) : ApiResponse
     {
-        $response = $this->curl('PUT', $endpoint, $dataString);
+        $response = $this->curl('PUT', $endpoint, $postData);
 
         return $response;
     }

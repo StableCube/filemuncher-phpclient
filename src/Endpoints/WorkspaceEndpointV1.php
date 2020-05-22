@@ -2,6 +2,8 @@
 
 namespace StableCube\FileMuncherClient\Endpoints;
 
+use StableCube\FileMuncherClient\Models\ApiResponse;
+use StableCube\FileMuncherClient\Models\WorkspaceApiResponse;
 use StableCube\FileMuncherClient\Models\Workspace;
 use StableCube\FileMuncherClient\Services\OAuthTokenManager;
 use StableCube\FileMuncherClient\Exceptions\FileMuncherGraphQLErrorException;
@@ -20,21 +22,30 @@ class WorkspaceEndpointV1 extends EndpointBase
         parent::__construct($tokenManager, $disableCertValidation);
     }
 
-    public function create() : Workspace
+    public function create() : WorkspaceApiResponse
     {
         $response = $this->curlPost("{$this->workspaceHubApiUriRoot}/workspaces");
+        $dataResponse = new WorkspaceApiResponse();
+        $dataResponse->setStatusCode($response->getStatusCode());
+        if($response->succeeded() === false) {
+            return $dataResponse;
+        }
+
+        $jsonData = $response->getResponseJson();
 
         $data = new Workspace();
-        $data->setId($response['id']);
-        $data->setCreationDate(new \DateTime($response['creationDate']));
-        $data->setExpireDate(new \DateTime($response['expireDate']));
-        $data->setFileServerUri($response['fileServerUri']);
+        $data->setId($jsonData['id']);
+        $data->setCreationDate(new \DateTime($jsonData['creationDate']));
+        $data->setExpireDate(new \DateTime($jsonData['expireDate']));
+        $data->setFileServerUri($jsonData['fileServerUri']);
 
-        return $data;
+        $dataResponse->setData($data);
+
+        return $dataResponse;
     }
 
-    public function delete(string $workspaceId)
+    public function delete(string $workspaceId) : ApiResponse
     {
-        $this->curlDelete("{$this->workspaceHubApiUriRoot}/workspaces/{$workspaceId}");
+        return $this->curlDelete("{$this->workspaceHubApiUriRoot}/workspaces/{$workspaceId}");
     }
 }
