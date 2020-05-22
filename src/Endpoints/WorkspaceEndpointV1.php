@@ -34,10 +34,10 @@ class WorkspaceEndpointV1 extends EndpointBase
         $jsonData = $response->getResponseJson();
 
         $data = new Workspace();
-        $data->setId($jsonData['id']);
-        $data->setCreationDate(new \DateTime($jsonData['creationDate']));
-        $data->setExpireDate(new \DateTime($jsonData['expireDate']));
-        $data->setFileServerUri($jsonData['fileServerUri']);
+        $data->setId($jsonData->id);
+        $data->setCreationDate(new \DateTime($jsonData->creationDate));
+        $data->setExpireDate(new \DateTime($jsonData->expireDate));
+        $data->setFileServerUri($jsonData->fileServerUri);
 
         $dataResponse->setData($data);
 

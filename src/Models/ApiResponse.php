@@ -38,6 +38,6 @@ class ApiResponse
 
     public function getResponseJson() : object
     {
-        return json_decode($this->getResponseData(), true);
+        return json_decode($this->getResponseData());
     }
 }
