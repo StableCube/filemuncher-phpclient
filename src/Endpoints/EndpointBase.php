@@ -40,7 +40,7 @@ abstract class EndpointBase
         return $this->getOauthTokenManager()->getBackendToken();
     }
 
-    private function curl(string $action, string $endpoint, object $postData = null) : ApiResponse
+    private function curl(string $action, string $endpoint, $postData = null) : ApiResponse
     {
         $token = $this->getBackendApiAccessToken();
         
@@ -79,14 +79,14 @@ abstract class EndpointBase
         return $apiResponse;
     }
 
-    protected function curlPost(string $endpoint, object $postData = null) : ApiResponse
+    protected function curlPost(string $endpoint, $postData = null) : ApiResponse
     {
         $response = $this->curl('POST', $endpoint, $postData);
 
         return $response;
     }
 
-    protected function curlPut(string $endpoint, object $postData = null) : ApiResponse
+    protected function curlPut(string $endpoint, $postData = null) : ApiResponse
     {
         $response = $this->curl('PUT', $endpoint, $postData);
 
