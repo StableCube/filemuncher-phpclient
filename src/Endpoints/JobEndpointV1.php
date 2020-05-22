@@ -25,22 +25,23 @@ class JobEndpointV1 extends EndpointBase
         parent::__construct($tokenManager, $disableCertValidation);
     }
 
-    private function responseToBatchCreatedOutput(array $response) {
+    private function responseToBatchCreatedOutput(object $response) : TaskBatchCreatedOutputDTO
+    {
         $output = new TaskBatchCreatedOutputDTO();
-        $output->setId($response['id']);
-        $output->setWorkspaceId($response['workspaceId']);
-        $output->setJobId($response['jobId']);
-        $output->setMetaTags($response['metaTags']);
+        $output->setId($response->id);
+        $output->setWorkspaceId($response->workspaceId);
+        $output->setJobId($response->jobId);
+        $output->setMetaTags($response->metaTags);
 
         $taskArray = array();
-        foreach ($response['tasks'] as $taskRaw) {
+        foreach ($response->tasks as $taskRaw) {
             $task = new TaskCreatedOutputDTO();
-            $task->setId($taskRaw['id']);
-            $task->setBatchId($taskRaw['batchId']);
-            $task->setBatchIndex($taskRaw['batchIndex']);
+            $task->setId($taskRaw->id);
+            $task->setBatchId($taskRaw->batchId);
+            $task->setBatchIndex($taskRaw->batchIndex);
 
             $metaTags = array();
-            foreach ($taskRaw['metaTags'] as $metaTag) {
+            foreach ($taskRaw->metaTags as $metaTag) {
                 $metaTags[$metaTag[0]] = $metaTag[1];
             }
 

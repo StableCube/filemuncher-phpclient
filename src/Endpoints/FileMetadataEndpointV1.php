@@ -35,7 +35,7 @@ class FileMetadataEndpointV1 extends EndpointBase
         $jsonData = $response->getResponseJson();
 
         $data = array();
-        foreach ($jsonData['metadata'] as $entryRaw) {
+        foreach ($jsonData->metadata as $entryRaw) {
             $metaData = new FileMetadataOutputDTO();
             $metaData->setWorkspaceId($entryRaw['workspaceId']);
             $metaData->setDirectory($entryRaw['directory']);
@@ -63,12 +63,12 @@ class FileMetadataEndpointV1 extends EndpointBase
         $jsonData = $response->getResponseJson();
 
         $data = array();
-        foreach ($jsonData['metadata'] as $entryRaw) {
+        foreach ($jsonData->metadata as $entryRaw) {
             $metaData = new FileMetadataOutputDTO();
-            $metaData->setWorkspaceId($entryRaw['workspaceId']);
-            $metaData->setDirectory($entryRaw['directory']);
-            $metaData->setFilename($entryRaw['filename']);
-            $metaData->setTags($entryRaw['tags']);
+            $metaData->setWorkspaceId($entryRaw->workspaceId);
+            $metaData->setDirectory($entryRaw->directory);
+            $metaData->setFilename($entryRaw->filename);
+            $metaData->setTags($entryRaw->tags);
 
             array_push($data, $metaData);
         }
@@ -91,10 +91,10 @@ class FileMetadataEndpointV1 extends EndpointBase
         $jsonData = $response->getResponseJson();
 
         $metaData = new FileMetadataOutputDTO();
-        $metaData->setWorkspaceId($jsonData['workspaceId']);
-        $metaData->setDirectory($jsonData['directory']);
-        $metaData->setFilename($jsonData['filename']);
-        $metaData->setTags($jsonData['tags']);
+        $metaData->setWorkspaceId($jsonData->workspaceId);
+        $metaData->setDirectory($jsonData->directory);
+        $metaData->setFilename($jsonData->filename);
+        $metaData->setTags($jsonData->tags);
 
         $dataResponse->setData($data);
 

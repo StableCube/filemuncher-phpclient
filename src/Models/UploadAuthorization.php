@@ -115,23 +115,23 @@ class UploadAuthorization
         $this->filename = $value;
     }
 
-    public function fromApiResponse(array $source)
+    public function fromApiResponse(object $source)
     {
-        $this->setId($source['id']);
-        $this->setCreationDate(new \DateTime($source['creationDate']));
-        $this->setAccountId($source['accountId']);
-        $this->setWorkspaceId($source['workspaceId']);
-        $this->setWorkspaceSessionId($source['workspaceSessionId']);
-        $this->setDocumentType($source['documentType']);
-        $this->setMaxFileSizeBytes($source['maxFileSizeBytes']);
-        $this->setFileUploaded($source['fileUploaded']);
+        $this->setId($source->id);
+        $this->setCreationDate(new \DateTime($source->creationDate));
+        $this->setAccountId($source->accountId);
+        $this->setWorkspaceId($source->workspaceId);
+        $this->setWorkspaceSessionId($source->workspaceSessionId);
+        $this->setDocumentType($source->documentType);
+        $this->setMaxFileSizeBytes($source->maxFileSizeBytes);
+        $this->setFileUploaded($source->fileUploaded);
 
-        if(array_key_exists('directory', $source)) {
-            $this->setDirectory($source['directory']);
+        if(property_exists($source, 'directory')) {
+            $this->setDirectory($source->directory);
         }
 
-        if(array_key_exists('filename', $source)) {
-            $this->setFilename($source['filename']);
+        if(property_exists($source, 'filename')) {
+            $this->setFilename($source->filename);
         }
     }
 }

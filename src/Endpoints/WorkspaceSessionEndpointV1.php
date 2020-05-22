@@ -41,10 +41,10 @@ class WorkspaceSessionEndpointV1 extends EndpointBase
         $jsonData = $response->getResponseJson();
 
         $data = new WorkspaceSession();
-        $data->setId($jsonData['id']);
-        $data->setWorkspaceId($jsonData['workspaceId']);
-        $data->setCreationDate(new \DateTime($jsonData['creationDate']));
-        $data->setExpireDate(new \DateTime($jsonData['expireDate']));
+        $data->setId($jsonData->id);
+        $data->setWorkspaceId($jsonData->workspaceId);
+        $data->setCreationDate(new \DateTime($jsonData->creationDate));
+        $data->setExpireDate(new \DateTime($jsonData->expireDate));
 
         $dataResponse->setData($data);
 
@@ -64,10 +64,10 @@ class WorkspaceSessionEndpointV1 extends EndpointBase
         $jsonData = $response->getResponseJson();
 
         $data = new WorkspaceSession();
-        $data->setId($response['id']);
-        $data->setWorkspaceId($response['workspaceId']);
-        $data->setCreationDate(new \DateTime($response['creationDate']));
-        $data->setExpireDate(new \DateTime($response['expireDate']));
+        $data->setId($response->id);
+        $data->setWorkspaceId($response->workspaceId);
+        $data->setCreationDate(new \DateTime($response->creationDate));
+        $data->setExpireDate(new \DateTime($response->expireDate));
 
         $dataResponse->setData($data);
 
