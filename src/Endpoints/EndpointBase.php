@@ -62,7 +62,7 @@ abstract class EndpointBase
         }
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . $token->accessToken,
+            'Authorization: Bearer ' . $token->getAccessToken(),
             'Content-Type: application/json',
             'Content-Length: ' . $contentLength)
             );
