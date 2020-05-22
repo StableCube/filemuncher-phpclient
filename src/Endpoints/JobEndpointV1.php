@@ -65,9 +65,7 @@ class JobEndpointV1 extends EndpointBase
         }
 
         $jsonData = $response->getResponseJson();
-
         $data = $this->responseToBatchCreatedOutput($jsonData);
-
         $dataResponse->setData($data);
 
         return $dataResponse;
@@ -84,9 +82,7 @@ class JobEndpointV1 extends EndpointBase
         }
 
         $jsonData = $response->getResponseJson();
-
         $data = $this->responseToBatchCreatedOutput($jsonData);
-
         $dataResponse->setData($data);
 
         return $dataResponse;
@@ -103,9 +99,7 @@ class JobEndpointV1 extends EndpointBase
         }
 
         $jsonData = $response->getResponseJson();
-
         $data = $this->responseToBatchCreatedOutput($jsonData);
-
         $dataResponse->setData($data);
 
         return $dataResponse;
