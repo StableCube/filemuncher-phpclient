@@ -37,10 +37,10 @@ class FileMetadataEndpointV1 extends EndpointBase
         $data = array();
         foreach ($jsonData->metadata as $entryRaw) {
             $metaData = new FileMetadataOutputDTO();
-            $metaData->setWorkspaceId($entryRaw['workspaceId']);
-            $metaData->setDirectory($entryRaw['directory']);
-            $metaData->setFilename($entryRaw['filename']);
-            $metaData->setTags($entryRaw['tags']);
+            $metaData->setWorkspaceId($entryRaw->workspaceId);
+            $metaData->setDirectory($entryRaw->directory);
+            $metaData->setFilename($entryRaw->filename);
+            $metaData->setTags($entryRaw->tags);
             
             array_push($data, $metaData);
         }
