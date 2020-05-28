@@ -11,6 +11,7 @@ use StableCube\FileMuncherClient\Endpoints\WorkspaceSessionEndpointV1;
 use StableCube\FileMuncherClient\Endpoints\UploadAuthorizationEndpointV1;
 use StableCube\FileMuncherClient\Endpoints\FileMetadataEndpointV1;
 use StableCube\FileMuncherClient\Endpoints\JobEndpointV1;
+use StableCube\FileMuncherClient\Endpoints\AuthenticationEndpointV1;
 
 class FileMuncherClientV1
 {
@@ -83,6 +84,19 @@ class FileMuncherClientV1
     public function jobEndpoint() : JobEndpointV1
     {
         return new JobEndpointV1(
+            $this->tokenManager, 
+            $this->workspaceHubApiUriRoot
+        );
+    }
+
+    /**
+     * Gets the AuthenticationEndpointV1 endpoint
+     *
+     * @return \StableCube\FileMuncherClient\Endpoints\AuthenticationEndpointV1
+     */
+    public function authenticationEndpoint() : AuthenticationEndpointV1
+    {
+        return new AuthenticationEndpointV1(
             $this->tokenManager, 
             $this->workspaceHubApiUriRoot
         );
