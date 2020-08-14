@@ -9,18 +9,9 @@ use StableCube\FileMuncherClient\Models\JsonWebToken;
  */
 abstract class TokenStorageAdapterBase implements ITokenStorageAdapter
 {
-    /**
-     * Get token from cache
-     * 
-     * @return JsonWebToken
-     */
+    public abstract function getCacheKey() : string;
+
     public abstract function getToken() : ?JsonWebToken;
 
-    /**
-     * Set token in cache
-     * 
-     * @param JsonWebToken $token
-     * @return void
-     */
     public abstract function setToken(JsonWebToken $token): void;
 }

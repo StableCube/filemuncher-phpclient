@@ -7,52 +7,32 @@ use StableCube\FileMuncherClient\Models\VideoUploadSession;
 use StableCube\FileMuncherClient\Models\FileManifest;
 use StableCube\FileMuncherClient\Models\WorkspaceAccessToken;
 use StableCube\FileMuncherClient\Models\ApiResponse;
-use StableCube\FileMuncherClient\Services\OAuthTokenManager;
 use StableCube\FileMuncherClient\Exceptions\DestinationNotWriteableException;
 use StableCube\FileMuncherClient\Exceptions\FileMuncherHttpException;
 use StableCube\FileMuncherClient\Exceptions\DownloadFailedException;
 
 abstract class EndpointBase
 {
-    private $tokenManager;
-    private $disableCertValidation;
+    private $endpointToken;
 
-    function __construct(OAuthTokenManager $tokenManager, bool $disableCertValidation = false)
+    function __construct(JsonWebToken $endpointToken)
     {
-        $this->tokenManager = $tokenManager;
-        $this->disableCertValidation = $disableCertValidation;
+        $this->endpointToken = $endpointToken;
     }
 
-    protected function getOauthTokenManager() : OAuthTokenManager
+    protected function getEndpointToken() : JsonWebToken
     {
-        return $this->tokenManager;
-    }
-
-    /**
-     * Gets the api access token for backend access.
-     * 
-     * This token can create Workspaces and authorize file uploads
-     * 
-     * For security reasons this token should only be used by the backend server
-     */
-    protected function getBackendApiAccessToken() : JsonWebToken
-    {
-        return $this->getOauthTokenManager()->getBackendToken();
+        return $this->endpointToken;
     }
 
     private function curl(string $action, string $endpoint, $postData = null) : ApiResponse
     {
-        $token = $this->getBackendApiAccessToken();
+        $token = $this->getEndpointToken();
         
         $curl = curl_init($endpoint);
         curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $action);
-
-        if($this->disableCertValidation) {
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        }
 
         $contentLength = 0;
         if($postData != null) {
@@ -127,10 +107,6 @@ abstract class EndpointBase
         );
 
         $ch = curl_init();
-        if($this->disableCertValidation) {
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        }
 
         curl_setopt_array($ch, $options);
         $return = curl_exec($ch);

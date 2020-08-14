@@ -2,7 +2,6 @@
 
 namespace StableCube\FileMuncherClient\Endpoints;
 
-use StableCube\FileMuncherClient\Services\OAuthTokenManager;
 use StableCube\FileMuncherClient\DTOs\Shared\Output\TaskBatchCreatedOutputDTO;
 use StableCube\FileMuncherClient\DTOs\Shared\Output\TaskCreatedOutputDTO;
 use StableCube\FileMuncherClient\DTOs\VideoMutation\Input\VideoToolBatchInputDTO;
@@ -10,19 +9,20 @@ use StableCube\FileMuncherClient\DTOs\FileExport\Input\ExportInputDTO;
 use StableCube\FileMuncherClient\DTOs\ImageMutation\Input\ImageToolBatchInputDTO;
 use StableCube\FileMuncherClient\Models\ApiResponse;
 use StableCube\FileMuncherClient\Models\TaskBatchApiResponse;
+use StableCube\FileMuncherClient\Models\JsonWebToken;
 
 class JobEndpointV1 extends EndpointBase
 {
     private $workspaceHubApiUriRoot;
 
     function __construct(
-        OAuthTokenManager $tokenManager, 
-        string $workspaceHubApiUriRoot,
-        bool $disableCertValidation = false)
+        JsonWebToken $endpointToken, 
+        string $workspaceHubApiUriRoot
+    )
     {
         $this->workspaceHubApiUriRoot = $workspaceHubApiUriRoot;
 
-        parent::__construct($tokenManager, $disableCertValidation);
+        parent::__construct($endpointToken);
     }
 
     private function responseToBatchCreatedOutput(object $response) : TaskBatchCreatedOutputDTO

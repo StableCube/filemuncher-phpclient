@@ -5,21 +5,21 @@ namespace StableCube\FileMuncherClient\Endpoints;
 use StableCube\FileMuncherClient\Models\ApiResponse;
 use StableCube\FileMuncherClient\Models\WorkspaceApiResponse;
 use StableCube\FileMuncherClient\Models\Workspace;
-use StableCube\FileMuncherClient\Services\OAuthTokenManager;
 use StableCube\FileMuncherClient\Exceptions\FileMuncherGraphQLErrorException;
+use StableCube\FileMuncherClient\Models\JsonWebToken;
 
 class WorkspaceEndpointV1 extends EndpointBase
 {
     private $workspaceHubApiUriRoot;
 
     function __construct(
-        OAuthTokenManager $tokenManager, 
-        string $workspaceHubApiUriRoot,
-        bool $disableCertValidation = false)
+        JsonWebToken $endpointToken, 
+        string $workspaceHubApiUriRoot
+    )
     {
         $this->workspaceHubApiUriRoot = $workspaceHubApiUriRoot;
 
-        parent::__construct($tokenManager, $disableCertValidation);
+        parent::__construct($endpointToken);
     }
 
     public function create() : WorkspaceApiResponse

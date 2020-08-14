@@ -10,8 +10,16 @@ use StableCube\FileMuncherClient\Models\JsonWebToken;
 interface ITokenStorageAdapter
 {
     /**
+     * Get cache key used to get/set the token in cache
+     * 
+     * @return string
+     */
+    public function getCacheKey() : string;
+
+    /**
      * Get token from cache
      * 
+     * @param string $cacheKey
      * @return JsonWebToken
      */
     public function getToken() : ?JsonWebToken;
@@ -19,6 +27,7 @@ interface ITokenStorageAdapter
     /**
      * Set token in cache
      * 
+     * @param string $cacheKey
      * @param JsonWebToken $token
      * @return void
      */

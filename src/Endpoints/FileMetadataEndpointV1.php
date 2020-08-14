@@ -2,24 +2,24 @@
 
 namespace StableCube\FileMuncherClient\Endpoints;
 
-use StableCube\FileMuncherClient\Services\OAuthTokenManager;
 use StableCube\FileMuncherClient\DTOs\Shared\Output\FileMetadataOutputDTO;
 use StableCube\FileMuncherClient\Models\ApiResponse;
 use StableCube\FileMuncherClient\Models\FileMetadataCollectionApiResponse;
 use StableCube\FileMuncherClient\Models\FileMetadataApiResponse;
+use StableCube\FileMuncherClient\Models\JsonWebToken;
 
 class FileMetadataEndpointV1 extends EndpointBase
 {
     private $workspaceHubApiUriRoot;
 
     function __construct(
-        OAuthTokenManager $tokenManager, 
-        string $workspaceHubApiUriRoot,
-        bool $disableCertValidation = false)
+        JsonWebToken $endpointToken, 
+        string $workspaceHubApiUriRoot
+    )
     {
         $this->workspaceHubApiUriRoot = $workspaceHubApiUriRoot;
 
-        parent::__construct($tokenManager, $disableCertValidation);
+        parent::__construct($endpointToken);
     }
 
     public function getByWorkspace(string $workspaceId) : FileMetadataCollectionApiResponse

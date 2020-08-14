@@ -5,21 +5,20 @@ namespace StableCube\FileMuncherClient\Endpoints;
 use StableCube\FileMuncherClient\Models\ApiResponse;
 use StableCube\FileMuncherClient\Models\WorkspaceSession;
 use StableCube\FileMuncherClient\Models\WorkspaceSessionApiResponse;
-use StableCube\FileMuncherClient\Services\OAuthTokenManager;
+use StableCube\FileMuncherClient\Models\JsonWebToken;
 
 class WorkspaceSessionEndpointV1 extends EndpointBase
 {
     private $workspaceHubApiUriRoot;
 
     function __construct(
-        OAuthTokenManager $tokenManager, 
-        string $workspaceHubApiUriRoot,
-        bool $disableCertValidation = false
+        JsonWebToken $endpointToken, 
+        string $workspaceHubApiUriRoot
     )
     {
         $this->workspaceHubApiUriRoot = $workspaceHubApiUriRoot;
 
-        parent::__construct($tokenManager, $disableCertValidation);
+        parent::__construct($endpointToken);
     }
 
     public function create(string $workspaceId, string $apiKeySecret, bool $allowFileUpload) : WorkspaceSessionApiResponse
