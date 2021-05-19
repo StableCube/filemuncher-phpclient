@@ -2,6 +2,8 @@
 
 namespace StableCube\FileMuncherClient\Models;
 
+use StableCube\FileMuncherClient\DTOs\Shared\Output\FileMetadataOutputDTO;
+
 class FileMetadataApiResponse
 {
     protected $statusCode;

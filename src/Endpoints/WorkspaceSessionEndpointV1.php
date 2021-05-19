@@ -21,11 +21,10 @@ class WorkspaceSessionEndpointV1 extends EndpointBase
         parent::__construct($endpointToken);
     }
 
-    public function create(string $workspaceId, string $authorizedUserId) : WorkspaceSessionApiResponse
+    public function create(string $workspaceId) : WorkspaceSessionApiResponse
     {
         $input = array(
-            'workspaceId' => $workspaceId,
-            'authorizedUserId' => $authorizedUserId
+            'workspaceId' => $workspaceId
         );
 
         $response = $this->curlPost("{$this->workspaceHubApiUriRoot}/workspace-sessions", $input);

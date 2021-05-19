@@ -19,12 +19,12 @@ class FileMetadataOutputDTO
         $this->workspaceId = $value;
     }
 
-    public function getTags() : object
+    public function getTags() : array
     {
         return $this->tags;
     }
 
-    public function setTags(object $value)
+    public function setTags(array $value)
     {
         $this->tags = $value;
     }

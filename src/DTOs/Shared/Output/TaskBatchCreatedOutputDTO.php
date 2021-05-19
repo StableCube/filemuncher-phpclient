@@ -9,7 +9,7 @@ class TaskBatchCreatedOutputDTO
     public $id;
     public $workspaceId;
     public $jobId;
-    public $metaTags;
+    public $identifier;
     public $tasks;
 
     public function getId() : string
@@ -42,14 +42,14 @@ class TaskBatchCreatedOutputDTO
         $this->jobId = $jobId;
     }
 
-    public function getMetaTags() : array
+    public function getIdentifier() : string
     {
-        return $this->metaTags;
+        return $this->identifier;
     }
 
-    public function setMetaTags(array $metaTags)
+    public function setIdentifier(string $identifier)
     {
-        $this->metaTags = $metaTags;
+        $this->identifier = $identifier;
     }
 
     public function getTasks() : array
