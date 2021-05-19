@@ -7,7 +7,7 @@ class TaskCreatedOutputDTO
     public $id;
     public $batchId;
     public $batchIndex;
-    public $metaTags;
+    public $identifier;
 
     public function getId() : string
     {
@@ -39,13 +39,13 @@ class TaskCreatedOutputDTO
         $this->batchIndex = $batchIndex;
     }
 
-    public function getMetaTags() : array
+    public function getIdentifier() : string
     {
-        return $this->metaTags;
+        return $this->identifier;
     }
 
-    public function setMetaTags(array $metaTags)
+    public function setIdentifier(string $identifier)
     {
-        $this->metaTags = $metaTags;
+        $this->identifier = $identifier;
     }
 }

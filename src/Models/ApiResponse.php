@@ -40,4 +40,9 @@ class ApiResponse
     {
         return json_decode($this->getResponseData());
     }
+
+    public function getResponseJsonArray() : array
+    {
+        return json_decode($this->getResponseData(), true);
+    }
 }

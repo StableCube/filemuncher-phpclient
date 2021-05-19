@@ -4,18 +4,18 @@ namespace StableCube\FileMuncherClient\DTOs\FileExport\Input;
 
 class ExportInputDTO
 {
-    public $workspaceId;
+    public $workspaceSessionId;
     public $identifier;
     public $backblaze;
 
-    public function getWorkspaceId() : string
+    public function getWorkspaceSessionId() : string
     {
-        return $this->workspaceId;
+        return $this->workspaceSessionId;
     }
 
-    public function setWorkspaceId(string $workspaceId)
+    public function setWorkspaceSessionId(string $workspaceSessionId)
     {
-        $this->workspaceId = $workspaceId;
+        $this->workspaceSessionId = $workspaceSessionId;
     }
     
     public function getIdentifier() : string

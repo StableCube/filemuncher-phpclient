@@ -2,7 +2,7 @@
 
 namespace StableCube\FileMuncherClient\DTOs\VideoMutation\Input\Tools;
 
-use StableCube\FileMuncherClient\DTOs\VideoMutation\Input\ImageOutputProfileInputDTO;
+use StableCube\FileMuncherClient\DTOs\VideoMutation\Input\ImageFormatInputDTO;
 
 class ThumbnailPickerToolInputDTO extends MutationToolBase
 {
@@ -32,8 +32,8 @@ class ThumbnailPickerToolInputDTO extends MutationToolBase
     public function setOutputProfiles(array $outputProfiles)
     {
         foreach ($outputProfiles as $value) {
-            if (!($value instanceof ImageOutputProfileInputDTO)) {
-                throw new \Exception("Must be of type " . ImageOutputProfileInputDTO::class);
+            if (!($value instanceof ImageFormatInputDTO)) {
+                throw new \Exception("Must be of type " . ImageFormatInputDTO::class);
             }
         }
 

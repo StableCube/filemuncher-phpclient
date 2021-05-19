@@ -2,7 +2,7 @@
 
 namespace StableCube\FileMuncherClient\DTOs\VideoMutation\Input;
 
-class ProcessProfileFrameExtractOutput extends ImageConfigBase
+class ImageFormatInputDTO extends ImageConfigBase
 {
 
 }

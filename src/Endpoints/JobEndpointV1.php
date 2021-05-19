@@ -31,7 +31,7 @@ class JobEndpointV1 extends EndpointBase
         $output->setId($response->id);
         $output->setWorkspaceId($response->workspaceId);
         $output->setJobId($response->jobId);
-        $output->setMetaTags($response->metaTags);
+        $output->setIdentifier($response->identifier);
 
         $taskArray = array();
         foreach ($response->tasks as $taskRaw) {
@@ -39,13 +39,7 @@ class JobEndpointV1 extends EndpointBase
             $task->setId($taskRaw->id);
             $task->setBatchId($taskRaw->batchId);
             $task->setBatchIndex($taskRaw->batchIndex);
-
-            $metaTags = array();
-            foreach ($taskRaw->metaTags as $metaTag) {
-                $metaTags[$metaTag[0]] = $metaTag[1];
-            }
-
-            $task->setMetaTags($metaTags);
+            $task->setIdentifier($taskRaw->identifier);
 
             array_push($taskArray, $task);
         }

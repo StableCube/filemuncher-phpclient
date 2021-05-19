@@ -6,18 +6,18 @@ use StableCube\FileMuncherClient\DTOs\ImageMutation\Input\Tools\IImageMutationTo
 
 class ImageToolBatchInputDTO
 {
-    public $workspaceId;
+    public $workspaceSessionId;
     public $identifier;
     public $tools;
 
-    public function getWorkspaceId() : string
+    public function getWorkspaceSessionId() : string
     {
-        return $this->workspaceId;
+        return $this->workspaceSessionId;
     }
 
-    public function setWorkspaceId(string $workspaceId)
+    public function setWorkspaceSessionId(string $workspaceSessionId)
     {
-        $this->workspaceId = $workspaceId;
+        $this->workspaceSessionId = $workspaceSessionId;
     }
     
     public function getIdentifier() : string
