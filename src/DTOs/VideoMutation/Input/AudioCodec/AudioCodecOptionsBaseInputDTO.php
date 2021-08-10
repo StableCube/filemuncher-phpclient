@@ -8,6 +8,12 @@ abstract class AudioCodecOptionsBaseInputDTO implements IAudioCodecOptionsInputD
     public $copyAudioChannelsFromSource;
     public $audioChannels;
 
+    function __construct()
+    {
+        $this->audioChannels = 0;
+        $this->copyAudioChannelsFromSource = false;
+    }
+
     public function getCodec() : string
     {
         return $this->codec;
@@ -23,9 +29,9 @@ abstract class AudioCodecOptionsBaseInputDTO implements IAudioCodecOptionsInputD
         return $this->copyAudioChannelsFromSource;
     }
 
-    public function setCopyAudioChannelsFromSource(bool $copyAudioChannelsFromSource)
+    public function setCopyAudioChannelsFromSource(bool $value)
     {
-        $this->copyAudioChannelsFromSource = $copyAudioChannelsFromSource;
+        $this->copyAudioChannelsFromSource = $value;
     }
 
     public function getAudioChannels() : int

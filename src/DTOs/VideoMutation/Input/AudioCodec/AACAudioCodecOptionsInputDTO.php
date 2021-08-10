@@ -6,6 +6,8 @@ class AACAudioCodecOptionsInputDTO extends AudioCodecOptionsBaseInputDTO
 {
     function __construct()
     {
+        parent::__construct();
+        
         $this->setCodec('Aac');
     }
 }

@@ -15,6 +15,11 @@ class UploadAuthorization
     private $directory;
     private $filename;
 
+    function __construct()
+    {
+        $this->fileUploaded = false;
+    }
+
     public function getId() : string
     {
         return $this->id;
