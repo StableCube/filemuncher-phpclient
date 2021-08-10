@@ -13,6 +13,7 @@ class ExtractFrameToolInputDTO extends MutationToolBase
     function __construct()
     {
         $this->setMutationTool('ExtractFrame');
+        $this->timeMilliseconds = 0;
     }
 
     public function getSourceFilename() : string

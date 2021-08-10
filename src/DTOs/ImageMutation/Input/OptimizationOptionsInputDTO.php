@@ -9,6 +9,14 @@ class OptimizationOptionsInputDTO
     public $pngOptimiseLevel;
     public $pngLossySpeed;
 
+    function __construct()
+    {
+        $this->useLossy = false;
+        $this->lossyQuality = 0;
+        $this->pngOptimiseLevel = 2;
+        $this->pngLossySpeed = 5;
+    }
+
     public function getUseLossy() : bool
     {
         return $this->useLossy;

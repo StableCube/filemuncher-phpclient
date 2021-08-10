@@ -17,6 +17,7 @@ class X264VideoCodecOptionsInputDTO extends VideoCodecOptionsBaseInputDTO
     function __construct()
     {
         $this->setCodec('Libx264');
+
     }
 
     public function getFastFirstPass() : bool

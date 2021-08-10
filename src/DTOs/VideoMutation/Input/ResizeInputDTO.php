@@ -10,6 +10,13 @@ class ResizeInputDTO
     public $height;
     public $fillColor;
 
+    function __construct()
+    {
+        $this->upscaleBeyondSource = false;
+        $this->width = 0;
+        $this->height = 0;
+    }
+
     public function getUpscaleBeyondSource() : bool
     {
         return $this->upscaleBeyondSource;
